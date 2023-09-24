@@ -8,6 +8,7 @@ import { IngredienteComponent } from './components/ingrediente/ingrediente.compo
 import { MainComponent } from './components/main/main.component';
 import { RouterModule} from '@angular/router';
 import { Routes } from '@angular/router';
+import { RecetasListComponent } from './components/recetas-list/recetas-list.component';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -36,7 +37,8 @@ const routes: Routes = [
     AppComponent,
     RecetaComponent,
     IngredienteComponent,
-    MainComponent
+    MainComponent,
+    RecetasListComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
