@@ -12,14 +12,21 @@ import { RecetaState, RecetasRepository } from 'src/app/stores/recetas.repositor
 })
 export class RecetaComponent implements OnInit{
 
+  recetas: any[] = [];
+  displayedColumns: string[] = ['id', 'title', 'id_ingrediente'];
+  nuevoTitulo: string = "";
+  nuevoIngrediente: number = 0;
+
   constructor(public recetasRepo: RecetasRepository){}
 
   ngOnInit(): void {
     console.log("ngOnInit RecetaComponent");  
   }
 
-  addReceta(receta: string, ingrediente: number){
-    this.recetasRepo.addReceta(receta, ingrediente);
+  addReceta(){
+    this.recetasRepo.addReceta(this.nuevoTitulo, this.nuevoIngrediente);
+    this.nuevoTitulo = "";
+    this.nuevoIngrediente = 0;
   }
 
   delateReceta(id: string){

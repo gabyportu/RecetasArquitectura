@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, catchError, tap, throwError } from 'rxjs';
 import { Receta } from '../modelo/receta';
 import { RecetasRepository } from '../stores/recetas.repository';
 import { RecetaComponent } from '../components/receta/receta.component';
@@ -10,20 +10,25 @@ import { RecetaComponent } from '../components/receta/receta.component';
 })
 export class RecetasService {
 
-  private apiUrl = 'http://localhost:3000/recetas';
+  private apiUrl = 'http://localhost:4200/recetas';
 
-  constructor(private http: HttpClient, private recetasRepo: RecetasRepository) { }
+  constructor(private http: HttpClient, private recetaRepo: RecetasRepository){ }
 
   getRecetas(){
-    return this.http.get<Receta>('${this.apiUrl}/recetas');
+    return this.http.get<Receta>(`${this.apiUrl}/recetas`);
   }
 
-  addRecetas(receta: Receta){
+  /*addRecetas(receta: Receta){
     return this.http.post<Receta>('${this.apiUrl}/recetas', receta);
+  }*/
+
+  addRecetas(receta: Receta): Observable<Receta>{
+    return this.http.post<Receta>(`${this.apiUrl}/recetas`, receta);
   }
+  
 
   eliminarReceta(id: string){
-    return this.http.delete<Receta>('${this.apiUrl}/recetas/${id}');
+    return this.http.delete<Receta>(`${this.apiUrl}/recetas/${id}`);
   }
 
 }

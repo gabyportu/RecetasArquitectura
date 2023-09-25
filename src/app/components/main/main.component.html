@@ -359,8 +359,9 @@
     <!-- This nav gives you links to click, which tells the router which route to use (defined in the routes constant in  AppRoutingModule) -->
     <nav>
       <ul>
-        <li><a routerLink="recetas" routerLinkActive="active" ariaCurrentWhenActive="page">Receta Component</a></li>
-        <li><a routerLink="posts" routerLinkActive="active" ariaCurrentWhenActive="page">Post Component</a></li>
+        <li><a routerLink="/receta" routerLinkActive="active" ariaCurrentWhenActive="page">Receta Component</a></li>
+        <li><a routerLink="/recetas-list" routerLinkActive="active" ariaCurrentWhenActive="page">Receta-List Component</a></li>
+        <li style="cursor: pointer;" (click)="logout()">Cerrar Sesión</li>
       </ul>
     </nav>
     <!-- The routed views render in the <router-outlet>-->
@@ -374,6 +375,7 @@
   
   </div>
   
+  <router-outlet></router-outlet>
   <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
   <!-- * * * * * * * * * * * The content above * * * * * * * * * * * -->
   <!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
@@ -382,5 +384,5 @@
   <!-- * * * * * * * * * * End of Placeholder * * * * * * * * * * * -->
   <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
   
-  <router-outlet></router-outlet>
+
   

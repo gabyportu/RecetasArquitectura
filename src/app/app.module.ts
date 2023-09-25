@@ -1,17 +1,22 @@
-import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, NgModel } from '@angular/forms';
+import { MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule} from '@angular/material/button';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
-import { APP_INITIALIZER } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
+
 import { AppComponent } from './app.component';
 import { RecetaComponent } from './components/receta/receta.component';
 import { IngredienteComponent } from './components/ingrediente/ingrediente.component';
 import { MainComponent } from './components/main/main.component';
-import { RouterModule} from '@angular/router';
-import { Routes } from '@angular/router';
 import { RecetasListComponent } from './components/recetas-list/recetas-list.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatTableModule} from '@angular/material/table';
 import { AppRoutingModule } from './app-routing.module';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -29,12 +34,6 @@ function initializeKeycloak(keycloak: KeycloakService) {
     });
 }
 
-const routes: Routes = [
-  { path: 'receta', component: RecetaComponent },
-  { path: 'ingrediente', component: IngredienteComponent },
-  { path: '', component: MainComponent },
-]
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,14 +43,18 @@ const routes: Routes = [
     RecetasListComponent
   ],
   imports: [
-    RouterModule.forRoot(routes),
     BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    MatButtonModule,
+    MatInputModule,
+    MatSelectModule,
+    MatTableModule,
     KeycloakAngularModule,
     BrowserAnimationsModule,
-    MatTableModule,
-    AppRoutingModule
+    ReactiveFormsModule
   ],
-  exports: [RouterModule],
   providers: [
     {
       provide: APP_INITIALIZER,

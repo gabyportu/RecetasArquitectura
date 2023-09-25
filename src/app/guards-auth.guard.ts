@@ -6,6 +6,7 @@ import {
   UrlTree
 } from '@angular/router';
 import { KeycloakAuthGuard, KeycloakService } from 'keycloak-angular';
+import { CanActivateFn } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -21,12 +22,16 @@ export class AuthGuard extends KeycloakAuthGuard {
   public async isAccessAllowed(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Promise<boolean | UrlTree> {
+  ){
     if (!this.authenticated) {
       await this.keycloak.login({
         redirectUri: window.location.origin + state.url
       });
     }
-    return true;
+    const requiredRoles = route.data['roles'];
+    if (!Array.isArray(requiredRoles) || requiredRoles.length === 0) {
+      return true;
+    }
+    return requiredRoles.every((role) => this.roles.includes(role));
   }
 }

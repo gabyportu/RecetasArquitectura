@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-main',
@@ -7,4 +8,13 @@ import { Component } from '@angular/core';
 })
 export class MainComponent {
   title = 'frontend-recetasArqui'
+  constructor(private keycloakService: KeycloakService) { }
+
+  ngOnInit(): void {
+
+  }
+  public async logout(){
+    await this.keycloakService.logout("http://localhost:4200");
+  }
 }
+
