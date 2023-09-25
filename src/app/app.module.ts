@@ -9,6 +9,8 @@ import { MainComponent } from './components/main/main.component';
 import { RouterModule} from '@angular/router';
 import { Routes } from '@angular/router';
 import { RecetasListComponent } from './components/recetas-list/recetas-list.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatTableModule} from '@angular/material/table';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -44,6 +46,8 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     BrowserModule,
     KeycloakAngularModule,
+    BrowserAnimationsModule,
+    MatTableModule
   ],
   exports: [RouterModule],
   providers: [
