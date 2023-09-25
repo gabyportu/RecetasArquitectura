@@ -1,7 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { RecetasService } from 'src/app/services/recetas.service';
-import { Receta } from 'src/app/modelo/receta';
 import { Subscription } from 'rxjs';
+import { RecetaState, RecetasRepository } from 'src/app/stores/recetas.repository';
+
+
 
 @Component({
   selector: 'app-receta',
@@ -9,7 +11,26 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./receta.component.css']
 })
 export class RecetaComponent implements OnInit{
-  recetas: Receta[] = [];
+
+  constructor(public recetasRepo: RecetasRepository){}
+
+  ngOnInit(): void {
+    console.log("ngOnInit RecetaComponent");  
+  }
+
+  addReceta(receta: string, ingrediente: number){
+    this.recetasRepo.addReceta(receta, ingrediente);
+  }
+
+  delateReceta(id: string){
+    this.recetasRepo.delateReceta(id);
+  }
+
+  editReceta(id: string, nuevoTitulo: string){
+    this.recetasRepo.editReceta(id, nuevoTitulo);
+  }
+  
+  /*recetas: Receta[] = [];
   sub: Subscription | null = null;
 
   constructor(private recetaService: RecetasService) { }
@@ -20,5 +41,6 @@ export class RecetaComponent implements OnInit{
       console.log(recetas);
       this.recetas = recetas;
     });
-  }
+  }*/
+
 }

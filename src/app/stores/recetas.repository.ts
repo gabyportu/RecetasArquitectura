@@ -1,47 +1,50 @@
-import { createStore, withProps } from '@ngneat/elf';
-import { withEntities, selectAllEntities, setEntities, addEntities, updateEntities, deleteEntities, withUIEntities, withActiveId, selectActiveEntity, setActiveId, withActiveIds, selectActiveEntities, toggleActiveIds } from '@ngneat/elf-entities';
-import { withRequestsCache, withRequestsStatus } from '@ngneat/elf-requests';
+import { addEntities, deleteEntities, selectActiveId, selectAllEntities, setEntities, withEntities} from "@ngneat/elf-entities";
+import { withProps, createStore, setProp, setProps, select } from "@ngneat/elf";
+import {v4 as uuid} from 'uuid';
+import { Receta } from "../modelo/receta";
+import { Ingrediente } from "../modelo/ingrediente";
+import { Injectable } from "@angular/core";
+import { Observable, switchMap } from "rxjs";
+import { joinRequestResult } from "@ngneat/elf-requests";
 
-export interface RecetaUI {
-  123456789: number;
+export interface RecetaState{
+  id: string;
+  title: string;
+  id_ingrediente: number;
 }
 
-export interface Receta {
-  123456789: number;
+export interface RecetasProps{
+  filter: 'ALL' | 'COMPLETED' | 'ACTIVE';
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface RecetasProps {
+const store = createStore(
+  {name: 'recetas'},
+  withEntities<RecetaState>(),
+  withProps<RecetasProps>({filter: 'ALL'})
+);
+
+@Injectable({providedIn: 'root'})
+export class RecetasRepository{
+
+  recetas$ = store.pipe(selectAllEntities());
+  getRecetasProps(){
+    return store.pipe(selectAllEntities());
+  }
+
+  addReceta(receta: string, ingrediente: number){
+    store.update(addEntities({id: uuid(), title: receta, id_ingrediente: ingrediente}));
+  }
+
+  setRecetas(recetas: RecetaState[]){
+    store.update(addEntities(recetas));
+  }
+
+  delateReceta(id: string){
+    store.update(deleteEntities([id]));
+  }
+  editReceta(id: string, nuevoTitulo: string){
+    store.update(setEntities([{id, title: nuevoTitulo, id_ingrediente: 1}]));
+  }
 }
 
-export const store = createStore({ name: 'recetas' }, withProps<RecetasProps>({}), withEntities<Receta, '123456789'>({ idKey: '123456789' }), withUIEntities<RecetaUI, '123456789'>({ idKey: '123456789' }), withActiveId(), withActiveIds(), withRequestsCache<'recetas'>(), withRequestsStatus<'recetas'>());
 
-export const activeRecetas$ = store.pipe(selectActiveEntities());
-
-export const activeReceta$ = store.pipe(selectActiveEntity());
-
-export const recetas$ = store.pipe(selectAllEntities());
-
-export function setRecetas(recetas: Receta[]) {
-  store.update(setEntities(recetas));
-}
-
-export function addReceta(receta: Receta) {
-  store.update(addEntities(receta));
-}
-
-export function updateReceta(id: Receta['123456789'], receta: Partial<Receta>) {
-  store.update(updateEntities(id, receta));
-}
-
-export function deleteReceta(id: Receta['123456789']) {
-  store.update(deleteEntities(id));
-}
-
-export function setActiveRecetasId(id: Receta['123456789']) {
-  store.update(setActiveId(id));
-}
-
-export function toggleActiveRecetasIds(ids: Array<Receta['123456789']>) {
-  store.update(toggleActiveIds(ids));
-}

@@ -1,20 +1,30 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Receta } from '../modelo/receta';
+import { RecetasRepository } from '../stores/recetas.repository';
+import { RecetaComponent } from '../components/receta/receta.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecetasService {
 
-  constructor(private http: HttpClient) { }
-  getRecetas(): Observable<Receta[]>{
-    return this.http.get<Receta[]>('https://api.spoonacular.com/recipes/complexSearch?apiKey=6c1c1d4e0d5c4b5f9a9b9e4e5d7e8b7f');
-  } 
+  private apiUrl = 'http://localhost:3000/recetas';
 
-  getReceta(id: number): Observable<Receta>{
-    return this.http.get<Receta>('https://api.spoonacular.com/recipes/'+id+'/information?apiKey=6c1c1d4e0d5c4b5f9a9b9e4e5d7e8b7f');
+  constructor(private http: HttpClient, private recetasRepo: RecetasRepository) { }
+
+  getRecetas(){
+    return this.http.get<Receta>('${this.apiUrl}/recetas');
   }
+
+  addRecetas(receta: Receta){
+    return this.http.post<Receta>('${this.apiUrl}/recetas', receta);
+  }
+
+  eliminarReceta(id: string){
+    return this.http.delete<Receta>('${this.apiUrl}/recetas/${id}');
+  }
+
 }
 
